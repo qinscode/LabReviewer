@@ -32,6 +32,9 @@
             border-radius: var(--border-radius);
             padding: 30px;
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            height: calc(100vh - 38px);
+            overflow-y: auto;
+            margin-top: 38px; /* 为标题栏留出空间 */
         }
 
         h1 {
@@ -178,9 +181,39 @@
         .pulse {
             animation: pulse 0.5s;
         }
+
+        /* 添加以下新样式 */
+        #titlebar {
+            height: 38px; /* 增加高度以适应 macOS 标题栏 */
+            background-color: transparent;
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            -webkit-app-region: drag;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        #titlebar h1 {
+            font-size: 14px;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 移除窗口控制按钮样式 */
+        #window-controls {
+            display: none;
+        }
     </style>
 </head>
 <body>
+    <div id="titlebar">
+        <h1>Advanced Comment Generator Tool</h1>
+    </div>
     <div class="container">
         <h1>Advanced Comment Generator Tool</h1>
         <div class="options" id="options">
@@ -307,8 +340,6 @@
                 copyBtn.style.backgroundColor = '';
             }, 2000);
         }
-
-
     </script>
 </body>
 </html>
