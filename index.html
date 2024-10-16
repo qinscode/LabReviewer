@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comment Generator Tool for Lab Setup Reviews</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .option {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+        }
+        .option input {
+            margin-right: 10px;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            margin: 20px 0;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 16px;
+        }
+        #generateBtn {
+            background-color: #3498db;
+        }
+        #generateBtn:hover {
+            background-color: #2980b9;
+        }
+        #clearBtn {
+            background-color: #e74c3c;
+        }
+        #clearBtn:hover {
+            background-color: #c0392b;
+        }
+        #copyBtn {
+            background-color: #2ecc71;
+        }
+        #copyBtn:hover {
+            background-color: #27ae60;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="options" id="options">
+            <label class="option">
+                <input type="checkbox" value="The description is sufficient" id="sufficientDescription">
+                The description is sufficient
+            </label>
+            <label class="option">
+                <input type="checkbox" value="No screenshot/description of installing fabric">
+                No screenshot/description of installing fabric
+            </label>
+            <label class="option">
+                <input type="checkbox" value="No explanation of the config file">
+                No explanation of the config file
+            </label>
+            <label class="option">
+                <input type="checkbox" value="No explanation of the fabric code that connects with the instance">
+                No explanation of the fabric code that connects with the instance
+            </label>
+            <label class="option">
+                <input type="checkbox" value="In fabric for automation, no description of code in installing/setting/activating the Python 3 virtual environment">
+                In fabric for automation, no description of code in installing/setting/activating the Python 3 virtual environment
+            </label>
+            <label class="option">
+                <input type="checkbox" value="In fabric for automation, no description of code in installing/configuring/restarting nginx">
+                In fabric for automation, no description of code in installing/configuring/restarting nginx
+            </label>
+            <label class="option">
+                <input type="checkbox" value="In fabric for automation, no description of code in creating and setting up django inside the created EC2 instance">
+                In fabric for automation, no description of code in creating and setting up django inside the created EC2 instance
+            </label>
+            <label class="option">
+                <input type="checkbox" value="No description/screenshot of the url access in the end">
+                No description/screenshot of the url access in the end
+            </label>
+        </div>
+        <textarea id="output" readonly></textarea>
+        <div class="buttons">
+            <button id="generateBtn">Generate Comments</button>
+            <button id="clearBtn">Clear Comments</button>
+            <button id="copyBtn">Copy to Clipboard</button>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript 代码保持不变
+        const generateBtn = document.getElementById('generateBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const copyBtn = document.getElementById('copyBtn');
+        const output = document.getElementById('output');
+        const options = document.getElementById('options');
+        const sufficientDescription = document.getElementById('sufficientDescription');
+        const otherOptions = options.querySelectorAll('input:not(#sufficientDescription)');
+
+        generateBtn.addEventListener('click', generateComments);
+        clearBtn.addEventListener('click', clearComments);
+        copyBtn.addEventListener('click', copyToClipboard);
+        options.addEventListener('change', handleOptionChange);
+
+        function handleOptionChange(event) {
+            if (event.target === sufficientDescription) {
+                otherOptions.forEach(option => {
+                    option.checked = false;
+                    option.parentElement.classList.toggle('disabled', sufficientDescription.checked);
+                });
+            } else {
+                const anyOtherChecked = Array.from(otherOptions).some(option => option.checked);
+                sufficientDescription.checked = !anyOtherChecked;
+                sufficientDescription.parentElement.classList.toggle('disabled', anyOtherChecked);
+            }
+        }
+
+        function generateComments() {
+            const selectedOptions = Array.from(options.querySelectorAll('input:checked')).map(input => input.value);
+            output.value = "In lab 7, " + selectedOptions.join('\n');
+        }
+
+        function clearComments() {
+            output.value = '';
+            options.querySelectorAll('input').forEach(input => {
+                input.checked = false;
+                input.parentElement.classList.remove('disabled');
+            });
+        }
+
+        function copyToClipboard() {
+            output.select();
+            document.execCommand('copy');
+            alert('Comments copied to clipboard!');
+        }
+    </script>
+</body>
+</html>
