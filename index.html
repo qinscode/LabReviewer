@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced Comment Generator Tool for Lab Setup Reviews</title>
+    <title>Comment Generator Tool for Cloud Computing Lab</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
     <style>
         :root {
@@ -30,6 +30,12 @@
             height: calc(100vh - 38px);
             overflow-y: auto;
             box-sizing: border-box;
+            scrollbar-width: none; /* 对 Firefox */
+            -ms-overflow-style: none; /* 对 IE 和 Edge */
+        }
+
+        .container::-webkit-scrollbar {
+            display: none; /* 对 Chrome, Safari 和 Opera */
         }
 
         .options {
@@ -52,7 +58,7 @@
         .option:hover {
             background-color: #e9ecef;
             transform: translateY(-2px);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .option input {
@@ -106,7 +112,7 @@
 
         button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         button:active {
@@ -153,9 +159,15 @@
         }
 
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
         }
 
         .pulse {
@@ -179,8 +191,12 @@
         }
 
         @keyframes bounce {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
         }
 
         .bounce {
@@ -188,153 +204,160 @@
         }
 
         .title {
-            color: var(--primary-color);
+            color: var(--text-color);
             font-size: 14px;
             font-weight: bold;
             margin: 0;
             letter-spacing: 0.5px;
-            pointer-events: none; /* 防��鼠标事件 */
+            pointer-events: none; /* 防止鼠标事件 */
         }
     </style>
 </head>
 <body>
-    <div id="titlebar">
-        <h1 class="title">Advanced Comment Generator for Lab Setup Reviews</h1>
+<div id="titlebar">
+    <h1 class="title">Comment Generator Tool for Cloud Computing Lab</h1>
+</div>
+<div class="container">
+    <div class="options" id="options">
+        <label class="option">
+            <input type="checkbox" value="The description is sufficient" id="sufficientDescription">
+            The description is sufficient
+        </label>
+        <label class="option">
+            <input type="checkbox" value="no screenshot/description of installing fabric">
+            No screenshot/description of installing fabric
+        </label>
+        <label class="option">
+            <input type="checkbox" value="no explanation of the config file">
+            No explanation of the config file
+        </label>
+        <label class="option">
+            <input type="checkbox" value="no explanation of the fabric code that connects with the instance">
+            No explanation of the fabric code that connects with the instance
+        </label>
+        <label class="option">
+            <input type="checkbox"
+                   value="in fabric for automation, no description of code in installing/setting/activating the Python 3 virtual environment">
+            In fabric for automation, no description of code in installing/setting/activating the Python 3 virtual
+            environment
+        </label>
+        <label class="option">
+            <input type="checkbox"
+                   value="in fabric for automation, no description of code in installing/configuring/restarting nginx">
+            In fabric for automation, no description of code in installing/configuring/restarting nginx
+        </label>
+        <label class="option">
+            <input type="checkbox"
+                   value="in fabric for automation, no description of code in creating and setting up django inside the created EC2 instance">
+            In fabric for automation, no description of code in creating and setting up django inside the created EC2
+            instance
+        </label>
+        <label class="option">
+            <input type="checkbox" value="no description/screenshot of the url access in the end">
+            No description/screenshot of the url access in the end
+        </label>
     </div>
-    <div class="container">
-        <div class="options" id="options">
-            <label class="option">
-                <input type="checkbox" value="The description is sufficient" id="sufficientDescription">
-                The description is sufficient
-            </label>
-            <label class="option">
-                <input type="checkbox" value="no screenshot/description of installing fabric">
-                No screenshot/description of installing fabric
-            </label>
-            <label class="option">
-                <input type="checkbox" value="no explanation of the config file">
-                No explanation of the config file
-            </label>
-            <label class="option">
-                <input type="checkbox" value="no explanation of the fabric code that connects with the instance">
-                No explanation of the fabric code that connects with the instance
-            </label>
-            <label class="option">
-                <input type="checkbox" value="in fabric for automation, no description of code in installing/setting/activating the Python 3 virtual environment">
-                In fabric for automation, no description of code in installing/setting/activating the Python 3 virtual environment
-            </label>
-            <label class="option">
-                <input type="checkbox" value="in fabric for automation, no description of code in installing/configuring/restarting nginx">
-                In fabric for automation, no description of code in installing/configuring/restarting nginx
-            </label>
-            <label class="option">
-                <input type="checkbox" value="in fabric for automation, no description of code in creating and setting up django inside the created EC2 instance">
-                In fabric for automation, no description of code in creating and setting up django inside the created EC2 instance
-            </label>
-            <label class="option">
-                <input type="checkbox" value="no description/screenshot of the url access in the end">
-                No description/screenshot of the url access in the end
-            </label>
-        </div>
-        <div id="suggestionStepMark"></div>
-        <textarea id="output" readonly placeholder="Generated comments will appear here..."></textarea>
-        <div class="buttons">
-            <button id="generateBtn"><i class="fas fa-comment"></i>Generate Comments</button>
-            <button id="clearBtn"><i class="fas fa-trash"></i>Clear</button>
-            <button id="copyBtn"><i class="fas fa-copy"></i>Copy</button>
-        </div>
+    <div id="suggestionStepMark"></div>
+    <textarea id="output" readonly placeholder="Generated comments will appear here..."></textarea>
+    <div class="buttons">
+        <button id="copyBtn"><i class="fas fa-copy"></i>Copy</button>
+
+        <button id="clearBtn"><i class="fas fa-trash"></i>Clear</button>
+        <button id="generateBtn"><i class="fas fa-comment"></i>Generate Comments</button>
+
     </div>
+</div>
 
-    <script>
-        const output = document.getElementById('output');
-        const options = document.getElementById('options');
-        const sufficientDescription = document.getElementById('sufficientDescription');
-        const otherOptions = options.querySelectorAll('input:not(#sufficientDescription)');
-        const clearBtn = document.getElementById('clearBtn');
-        const copyBtn = document.getElementById('copyBtn');
-        const generateBtn = document.getElementById('generateBtn');
-        const suggestionStepMark = document.getElementById('suggestionStepMark');
+<script>
+    const output = document.getElementById('output');
+    const options = document.getElementById('options');
+    const sufficientDescription = document.getElementById('sufficientDescription');
+    const otherOptions = options.querySelectorAll('input:not(#sufficientDescription)');
+    const clearBtn = document.getElementById('clearBtn');
+    const copyBtn = document.getElementById('copyBtn');
+    const generateBtn = document.getElementById('generateBtn');
+    const suggestionStepMark = document.getElementById('suggestionStepMark');
 
-        options.addEventListener('change', handleOptionChange);
-        clearBtn.addEventListener('click', clearComments);
-        copyBtn.addEventListener('click', copyToClipboard);
-        generateBtn.addEventListener('click', generateComments);
+    options.addEventListener('change', handleOptionChange);
+    clearBtn.addEventListener('click', clearComments);
+    copyBtn.addEventListener('click', copyToClipboard);
+    generateBtn.addEventListener('click', generateComments);
 
-        function handleOptionChange(event) {
-            if (event.target === sufficientDescription) {
-                otherOptions.forEach(option => {
-                    option.checked = false;
-                });
-            } else {
-                const anyOtherChecked = Array.from(otherOptions).some(option => option.checked);
-                sufficientDescription.checked = !anyOtherChecked;
-            }
-            generateComments();
-            updateSuggestionStepMark();
-
-            // 添加放大弹跳动画
-            if (event.target.type === 'checkbox') {
-                const parentLabel = event.target.closest('.option');
-                parentLabel.classList.add('bounce');
-                setTimeout(() => {
-                    parentLabel.classList.remove('bounce');
-                }, 300);
-            }
-        }
-
-        function generateComments() {
-            const selectedOptions = Array.from(options.querySelectorAll('input:checked')).map(input => input.value + '.');
-            let comment = '';
-            if (selectedOptions.length > 0) {
-                if (!sufficientDescription.checked) {
-                    comment = "In lab 7, the description is insufficient, as ";
-                } else {
-                    comment = "In lab 7, ";
-                }
-                comment += selectedOptions.join(' ');
-            }
-            output.value = comment;
-            output.classList.add('pulse');
-            setTimeout(() => output.classList.remove('pulse'), 500);
-        }
-
-        function updateSuggestionStepMark() {
-            const deductionPoints = Array.from(otherOptions).filter(option => option.checked).length;
-            let mark;
-            if (deductionPoints === 0) {
-                mark = "85%";
-            } else if (deductionPoints < 3) {
-                mark = "65%";
-            } else if (deductionPoints < 5) {
-                mark = "45%";
-            } else if (deductionPoints < 7 ) {
-                mark = "25%";
-            } else {
-                mark = "0%";
-            }
-            suggestionStepMark.textContent = `Suggestion Step Mark: ${mark}`;
-            suggestionStepMark.classList.add('pulse');
-            setTimeout(() => suggestionStepMark.classList.remove('pulse'), 500);
-        }
-
-        function clearComments() {
-            output.value = '';
-            options.querySelectorAll('input').forEach(input => {
-                input.checked = false;
+    function handleOptionChange(event) {
+        if (event.target === sufficientDescription) {
+            otherOptions.forEach(option => {
+                option.checked = false;
             });
-            suggestionStepMark.textContent = '';
+        } else {
+            const anyOtherChecked = Array.from(otherOptions).some(option => option.checked);
+            sufficientDescription.checked = !anyOtherChecked;
         }
+        generateComments();
+        updateSuggestionStepMark();
 
-        function copyToClipboard() {
-            output.select();
-            document.execCommand('copy');
-            copyBtn.textContent = 'Copied!';
-            copyBtn.style.backgroundColor = '#27ae60';
+        // 添加放大弹跳动画
+        if (event.target.type === 'checkbox') {
+            const parentLabel = event.target.closest('.option');
+            parentLabel.classList.add('bounce');
             setTimeout(() => {
-                copyBtn.innerHTML = '<i class="fas fa-copy"></i>Copy';
-                copyBtn.style.backgroundColor = '';
-            }, 2000);
+                parentLabel.classList.remove('bounce');
+            }, 300);
         }
-    </script>
+    }
+
+    function generateComments() {
+        const selectedOptions = Array.from(options.querySelectorAll('input:checked')).map(input => input.value + '.');
+        let comment = '';
+        if (selectedOptions.length > 0) {
+            if (!sufficientDescription.checked) {
+                comment = "In lab 7, the description is insufficient, as ";
+            } else {
+                comment = "In lab 7, ";
+            }
+            comment += selectedOptions.join(' ');
+        }
+        output.value = comment;
+        output.classList.add('pulse');
+        setTimeout(() => output.classList.remove('pulse'), 500);
+    }
+
+    function updateSuggestionStepMark() {
+        const deductionPoints = Array.from(otherOptions).filter(option => option.checked).length;
+        let mark;
+        if (deductionPoints === 0) {
+            mark = "85%";
+        } else if (deductionPoints < 3) {
+            mark = "65%";
+        } else if (deductionPoints < 5) {
+            mark = "45%";
+        } else if (deductionPoints < 7) {
+            mark = "25%";
+        } else {
+            mark = "0%";
+        }
+        suggestionStepMark.textContent = `Suggestion Step Mark: ${mark}`;
+        suggestionStepMark.classList.add('pulse');
+        setTimeout(() => suggestionStepMark.classList.remove('pulse'), 500);
+    }
+
+    function clearComments() {
+        output.value = '';
+        options.querySelectorAll('input').forEach(input => {
+            input.checked = false;
+        });
+        suggestionStepMark.textContent = '';
+    }
+
+    function copyToClipboard() {
+        output.select();
+        document.execCommand('copy');
+        copyBtn.textContent = 'Copied!';
+        copyBtn.style.backgroundColor = '#27ae60';
+        setTimeout(() => {
+            copyBtn.innerHTML = '<i class="fas fa-copy"></i>Copy';
+            copyBtn.style.backgroundColor = '';
+        }, 2000);
+    }
+</script>
 </body>
 </html>
