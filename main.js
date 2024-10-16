@@ -4,7 +4,7 @@ const path = require('path');
 function createWindow() {
   const win = new BrowserWindow({
     width: 800,
-    height: 1020,
+    height: 880,
     titleBarStyle: 'hiddenInset', // 使用 macOS 原生的隐藏标题栏样式
     webPreferences: {
       nodeIntegration: true,
