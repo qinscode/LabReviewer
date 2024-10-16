@@ -9,17 +9,18 @@
             font-family: Arial, sans-serif;
             line-height: 1.6;
             color: #333;
-            background-color: #f0f2f5;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            max-width: 800px;
+            /*background-color: #f0f2f5;*/
+            /*margin: 0;*/
+            /*padding: 20px;*/
+                        max-width: 800px;
             margin: 0 auto;
             background-color: #fff;
-            border-radius: 8px;
+            /*border-radius: 8px;*/
             padding: 20px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            /*box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);*/
+        }
+        .container {
+
         }
         h1 {
             text-align: center;
@@ -129,50 +130,45 @@
     </div>
 
     <script>
-        // JavaScript 代码保持不变
-        const generateBtn = document.getElementById('generateBtn');
-        const clearBtn = document.getElementById('clearBtn');
-        const copyBtn = document.getElementById('copyBtn');
         const output = document.getElementById('output');
         const options = document.getElementById('options');
         const sufficientDescription = document.getElementById('sufficientDescription');
         const otherOptions = options.querySelectorAll('input:not(#sufficientDescription)');
+        const clearBtn = document.getElementById('clearBtn');
+        const copyBtn = document.getElementById('copyBtn');
 
-        generateBtn.addEventListener('click', generateComments);
+        options.addEventListener('change', handleOptionChange);
         clearBtn.addEventListener('click', clearComments);
         copyBtn.addEventListener('click', copyToClipboard);
-        options.addEventListener('change', handleOptionChange);
 
         function handleOptionChange(event) {
             if (event.target === sufficientDescription) {
                 otherOptions.forEach(option => {
                     option.checked = false;
-                    option.parentElement.classList.toggle('disabled', sufficientDescription.checked);
                 });
             } else {
                 const anyOtherChecked = Array.from(otherOptions).some(option => option.checked);
                 sufficientDescription.checked = !anyOtherChecked;
-                sufficientDescription.parentElement.classList.toggle('disabled', anyOtherChecked);
             }
+            generateComments();
         }
 
         function generateComments() {
             const selectedOptions = Array.from(options.querySelectorAll('input:checked')).map(input => input.value);
-            output.value = "In lab 7, " + selectedOptions.join('\n');
+            output.value = selectedOptions.length > 0 ? "In lab 7, " + selectedOptions.join('\n') : '';
         }
 
         function clearComments() {
             output.value = '';
             options.querySelectorAll('input').forEach(input => {
                 input.checked = false;
-                input.parentElement.classList.remove('disabled');
             });
         }
 
         function copyToClipboard() {
             output.select();
             document.execCommand('copy');
-            alert('Comments copied to clipboard!');
+            // 移除了 alert 弹窗
         }
     </script>
 </body>
