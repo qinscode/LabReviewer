@@ -93,35 +93,35 @@
                 The description is sufficient
             </label>
             <label class="option">
-                <input type="checkbox" value="No screenshot/description of installing fabric">
+                <input type="checkbox" value="no screenshot/description of installing fabric">
                 No screenshot/description of installing fabric
             </label>
             <label class="option">
-                <input type="checkbox" value="No explanation of the config file">
+                <input type="checkbox" value="no explanation of the config file">
                 No explanation of the config file
             </label>
             <label class="option">
-                <input type="checkbox" value="No explanation of the fabric code that connects with the instance">
+                <input type="checkbox" value="no explanation of the fabric code that connects with the instance">
                 No explanation of the fabric code that connects with the instance
             </label>
             <label class="option">
-                <input type="checkbox" value="In fabric for automation, no description of code in installing/setting/activating the Python 3 virtual environment">
+                <input type="checkbox" value="in fabric for automation, no description of code in installing/setting/activating the Python 3 virtual environment">
                 In fabric for automation, no description of code in installing/setting/activating the Python 3 virtual environment
             </label>
             <label class="option">
-                <input type="checkbox" value="In fabric for automation, no description of code in installing/configuring/restarting nginx">
+                <input type="checkbox" value="in fabric for automation, no description of code in installing/configuring/restarting nginx">
                 In fabric for automation, no description of code in installing/configuring/restarting nginx
             </label>
             <label class="option">
-                <input type="checkbox" value="In fabric for automation, no description of code in creating and setting up django inside the created EC2 instance">
+                <input type="checkbox" value="in fabric for automation, no description of code in creating and setting up django inside the created EC2 instance">
                 In fabric for automation, no description of code in creating and setting up django inside the created EC2 instance
             </label>
             <label class="option">
-                <input type="checkbox" value="No description/screenshot of the url access in the end">
+                <input type="checkbox" value="no description/screenshot of the url access in the end">
                 No description/screenshot of the url access in the end
             </label>
         </div>
-        <textarea id="output" readonly></textarea>
+        <label for="output"></label><textarea id="output" readonly></textarea>
         <div class="buttons">
             <button id="generateBtn">Generate Comments</button>
             <button id="clearBtn">Clear Comments</button>
@@ -155,7 +155,16 @@
 
         function generateComments() {
             const selectedOptions = Array.from(options.querySelectorAll('input:checked')).map(input => input.value + '.');
-            output.value = selectedOptions.length > 0 ? "In lab 7, " + selectedOptions.join(' ') : '';
+            let comment = '';
+            if (selectedOptions.length > 0) {
+                if (!sufficientDescription.checked) {
+                    comment = "In lab 7, the description is insufficient, as ";
+                } else {
+                    comment = "In lab 7, ";
+                }
+                comment += selectedOptions.join(' ');
+            }
+            output.value = comment;
         }
 
         function clearComments() {
