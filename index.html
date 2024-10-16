@@ -121,6 +121,7 @@
                 No description/screenshot of the url access in the end
             </label>
         </div>
+        <div id="suggestionStepMark" style="text-align: center; margin-top: 20px; font-weight: bold;"></div>
         <label for="output"></label><textarea id="output" readonly></textarea>
         <div class="buttons">
             <button id="generateBtn">Generate Comments</button>
@@ -136,6 +137,7 @@
         const otherOptions = options.querySelectorAll('input:not(#sufficientDescription)');
         const clearBtn = document.getElementById('clearBtn');
         const copyBtn = document.getElementById('copyBtn');
+        const suggestionStepMark = document.getElementById('suggestionStepMark');
 
         options.addEventListener('change', handleOptionChange);
         clearBtn.addEventListener('click', clearComments);
@@ -151,6 +153,7 @@
                 sufficientDescription.checked = !anyOtherChecked;
             }
             generateComments();
+            updateSuggestionStepMark();
         }
 
         function generateComments() {
@@ -167,17 +170,34 @@
             output.value = comment;
         }
 
+        function updateSuggestionStepMark() {
+            const deductionPoints = Array.from(otherOptions).filter(option => option.checked).length;
+            let mark;
+            if (deductionPoints === 0) {
+                mark = "85%";
+            } else if (deductionPoints < 3) {
+                mark = "65%";
+            } else if (deductionPoints < 5) {
+                mark = "45%";
+            } else if (deductionPoints < 7 ) {
+                mark = "25%";
+            } else {
+                mark = "0%";
+            }
+            suggestionStepMark.textContent = `Suggestion Step Mark: ${mark}`;
+        }
+
         function clearComments() {
             output.value = '';
             options.querySelectorAll('input').forEach(input => {
                 input.checked = false;
             });
+            suggestionStepMark.textContent = '';
         }
 
         function copyToClipboard() {
             output.select();
             document.execCommand('copy');
-            // 移除了 alert 弹窗
         }
     </script>
 </body>
