@@ -154,8 +154,8 @@
         }
 
         function generateComments() {
-            const selectedOptions = Array.from(options.querySelectorAll('input:checked')).map(input => input.value);
-            output.value = selectedOptions.length > 0 ? "In lab 7, " + selectedOptions.join('\n') : '';
+            const selectedOptions = Array.from(options.querySelectorAll('input:checked')).map(input => input.value + '.');
+            output.value = selectedOptions.length > 0 ? "In lab 7, " + selectedOptions.join(' ') : '';
         }
 
         function clearComments() {
