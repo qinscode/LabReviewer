@@ -10,7 +10,6 @@
             --primary-color: #3498db;
             --secondary-color: #2ecc71;
             --danger-color: #e74c3c;
-            --background-color: #f0f2f5;
             --text-color: #333;
             --border-radius: 8px;
         }
@@ -19,30 +18,18 @@
             font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: var(--text-color);
-            background-color: var(--background-color);
+            background-color: #fff;
             margin: 0;
-            padding: 20px;
-            transition: background-color 0.3s ease;
+            padding: 0;
         }
 
         .container {
             max-width: 900px;
-            margin: 0 auto;
-            background-color: #fff;
-            border-radius: var(--border-radius);
+            margin: 38px auto 0;
             padding: 30px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
             height: calc(100vh - 38px);
             overflow-y: auto;
-            margin-top: 38px; /* 为标题栏留出空间 */
-        }
-
-        h1 {
-            text-align: center;
-            color: var(--primary-color);
-            margin-bottom: 30px;
-            font-size: 32px;
-            font-weight: 300;
+            box-sizing: border-box;
         }
 
         .options {
@@ -165,31 +152,18 @@
             transition: all 0.3s ease;
         }
 
-
         @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.05);
-            }
-            100% {
-                transform: scale(1);
-            }
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
 
         .pulse {
             animation: pulse 0.5s;
         }
 
-        /* 添加以下新样式 */
         #titlebar {
-            height: 38px; /* 增加高度以适应 macOS 标题栏 */
-            background-color: transparent;
-            color: var(--text-color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            height: 38px;
             -webkit-app-region: drag;
             position: fixed;
             top: 0;
@@ -197,25 +171,11 @@
             right: 0;
             z-index: 1000;
         }
-
-        #titlebar h1 {
-            font-size: 14px;
-            margin: 0;
-            padding: 0;
-        }
-
-        /* 移除窗口控制按钮样式 */
-        #window-controls {
-            display: none;
-        }
     </style>
 </head>
 <body>
-    <div id="titlebar">
-        <h1>Advanced Comment Generator Tool</h1>
-    </div>
+    <div id="titlebar"></div>
     <div class="container">
-        <h1>Advanced Comment Generator Tool</h1>
         <div class="options" id="options">
             <label class="option">
                 <input type="checkbox" value="The description is sufficient" id="sufficientDescription">
