@@ -15,10 +15,9 @@ function createWindow() {
 
   win.loadFile('index.html');
 
-  // 移除这个事件监听器，因为在 macOS 中我们不希望在关闭窗口时退出应用
-  // win.on('close', (event) => {
-  //   app.quit();
-  // });
+  win.on('close', (event) => {
+    app.quit();
+  });
 }
 
 app.whenReady().then(() => {

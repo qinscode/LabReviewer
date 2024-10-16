@@ -171,6 +171,15 @@
             right: 0;
             z-index: 1000;
         }
+
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .bounce {
+            animation: bounce 0.3s;
+        }
     </style>
 </head>
 <body>
@@ -245,6 +254,15 @@
             }
             generateComments();
             updateSuggestionStepMark();
+
+            // 添加放大弹跳动画
+            if (event.target.type === 'checkbox') {
+                const parentLabel = event.target.closest('.option');
+                parentLabel.classList.add('bounce');
+                setTimeout(() => {
+                    parentLabel.classList.remove('bounce');
+                }, 300);
+            }
         }
 
         function generateComments() {
