@@ -1,6 +1,6 @@
 {
   "name": "comment-generator-app",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "Comment Generator Tool for Lab Setup Reviews",
   "main": "main.js",
   "type": "commonjs",
@@ -20,7 +20,8 @@
     "mac": {
       "category": "public.app-category.utilities",
       "target": [
-        "zip"
+        "zip",
+        "dmg"
       ],
       "icon": "build/icon.icns"
     }
