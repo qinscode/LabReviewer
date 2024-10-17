@@ -1,7 +1,7 @@
-const { app, BrowserWindow } = require('electron');
-const path = require('path');
+import { app, BrowserWindow } from 'electron';
+import * as path from 'path';
 
-function createWindow() {
+function createWindow(): void {
   const win = new BrowserWindow({
     width: 800,
     height: 880,
@@ -9,13 +9,13 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
-      enableRemoteModule: true // 启用远程模块
+      sandbox: false // Electron 33+ 默认启用沙箱，如果需要使用 Node.js API，需要禁用它
     },
   });
 
-  win.loadFile('index.html');
+  win.loadFile(path.join(__dirname, '../index.html'));
 
-  win.on('close', (event) => {
+  win.on('close', () => {
     app.quit();
   });
 }

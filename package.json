@@ -2,17 +2,21 @@
   "name": "comment-generator-app",
   "version": "1.2.0",
   "description": "Comment Generator Tool for Lab Setup Reviews",
-  "main": "main.js",
+  "main": "dist/main.js",
   "type": "commonjs",
   "scripts": {
-    "start": "electron .",
-    "build": "electron-builder --mac"
+    "start": "tsc && electron .",
+    "build": "tsc && electron-builder --mac --universal",
+    "watch": "tsc -w"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "electron": "13.6.9",
-    "electron-builder": "^24.6.4"
+    "@types/electron": "^1.6.10",
+    "@types/node": "^20.11.19",
+    "electron": "^33.0.1",
+    "electron-builder": "^25.1.8",
+    "typescript": "^5.3.3"
   },
   "build": {
     "appId": "com.example.comment-generator",
@@ -20,11 +24,26 @@
     "mac": {
       "category": "public.app-category.utilities",
       "target": [
-        "zip",
-        "dmg"
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
       ],
       "icon": "build/icon.icns"
     }
   },
-  "packageManager": "yarn@4.5.0+sha512.837566d24eec14ec0f5f1411adb544e892b3454255e61fdef8fd05f3429480102806bac7446bc9daff3896b01ae4b62d00096c7e989f1596f2af10b927532f39"
+  "packageManager": "yarn@4.5.0+sha512.837566d24eec14ec0f5f1411adb544e892b3454255e61fdef8fd05f3429480102806bac7446bc9daff3896b01ae4b62d00096c7e989f1596f2af10b927532f39",
+  "dependencies": {
+    "@types/ajv": "^1.0.0"
+  }
 }
