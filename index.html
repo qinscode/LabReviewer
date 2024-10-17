@@ -53,6 +53,7 @@
             align-items: center;
             transition: all 0.3s ease;
             border: 1px solid #e9ecef;
+            cursor: pointer; /* Add this line to change the cursor to a pointer on hover */
         }
 
         .option:hover {
@@ -170,9 +171,6 @@
             }
         }
 
-        .pulse {
-            animation: pulse 0.5s;
-        }
 
         #titlebar {
             height: 38px;
@@ -215,7 +213,7 @@
 </head>
 <body>
 <div id="titlebar">
-    <h1 class="title">Comment Generator Tool for Cloud Computing Lab</h1>
+    <h1 class="title">Comment Generator Tool for Lab Report</h1>
 </div>
 <div class="container">
     <div class="options" id="options">
@@ -224,36 +222,36 @@
             The description is sufficient
         </label>
         <label class="option">
-            <input type="checkbox" value="no screenshot/description of installing fabric">
+            <input type="checkbox" value="No screenshot/description of installing fabric">
             No screenshot/description of installing fabric
         </label>
         <label class="option">
-            <input type="checkbox" value="no explanation of the config file">
+            <input type="checkbox" value="No explanation of the config file">
             No explanation of the config file
         </label>
         <label class="option">
-            <input type="checkbox" value="no explanation of the fabric code that connects with the instance">
+            <input type="checkbox" value="No explanation of the fabric code that connects with the instance">
             No explanation of the fabric code that connects with the instance
         </label>
         <label class="option">
             <input type="checkbox"
-                   value="in fabric for automation, no description of code in installing/setting/activating the Python 3 virtual environment">
+                   value="In fabric for automation, no description of code in installing/setting/activating the Python 3 virtual environment">
             In fabric for automation, no description of code in installing/setting/activating the Python 3 virtual
             environment
         </label>
         <label class="option">
             <input type="checkbox"
-                   value="in fabric for automation, no description of code in installing/configuring/restarting nginx">
+                   value="In fabric for automation, no description of code in installing/configuring/restarting nginx">
             In fabric for automation, no description of code in installing/configuring/restarting nginx
         </label>
         <label class="option">
             <input type="checkbox"
-                   value="in fabric for automation, no description of code in creating and setting up django inside the created EC2 instance">
+                   value="In fabric for automation, no description of code in creating and setting up django inside the created EC2 instance">
             In fabric for automation, no description of code in creating and setting up django inside the created EC2
             instance
         </label>
         <label class="option">
-            <input type="checkbox" value="no description/screenshot of the url access in the end">
+            <input type="checkbox" value="No description/screenshot of the url access in the end">
             No description/screenshot of the url access in the end
         </label>
     </div>
@@ -357,6 +355,12 @@
             copyBtn.innerHTML = '<i class="fas fa-copy"></i>Copy';
             copyBtn.style.backgroundColor = '';
         }, 2000);
+
+        // 添加以下代码来清空所有选项
+        setTimeout(() => {
+            clearComments();
+            updateSuggestionStepMark();
+        }, 15000);
     }
 </script>
 </body>
