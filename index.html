@@ -352,13 +352,13 @@
     function updateSuggestionStepMark() {
         const deductionPoints = Array.from(otherOptions).filter(option => option.checked).length;
         let mark;
-        if (deductionPoints === 0) {
+        if (deductionPoints < 2) {
             mark = "85%";
-        } else if (deductionPoints < 3) {
+        } else if (deductionPoints < 4) {
             mark = "65%";
         } else if (deductionPoints < 5) {
             mark = "45%";
-        } else if (deductionPoints < 7) {
+        } else if (deductionPoints < 6) {
             mark = "25%";
         } else {
             mark = "0%";

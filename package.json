@@ -6,7 +6,7 @@
   "type": "commonjs",
   "scripts": {
     "start": "tsc && electron .",
-    "build": "tsc && electron-builder --mac --universal",
+    "build": "tsc && electron-builder --mac",
     "watch": "tsc -w"
   },
   "author": "",
@@ -21,25 +21,23 @@
   "build": {
     "appId": "com.example.comment-generator",
     "productName": "Comment Generator",
+    "files": [
+      "dist/**/*",
+      "index.html",
+      "package.json"
+    ],
     "mac": {
       "category": "public.app-category.utilities",
       "target": [
         {
-          "target": "dmg",
-          "arch": [
-            "x64",
-            "arm64"
-          ]
-        },
-        {
           "target": "zip",
           "arch": [
-            "x64",
             "arm64"
           ]
         }
       ],
-      "icon": "build/icon.icns"
+      "icon": "build/icon.icns",
+      "mergeASARs": false
     }
   },
   "packageManager": "yarn@4.5.0+sha512.837566d24eec14ec0f5f1411adb544e892b3454255e61fdef8fd05f3429480102806bac7446bc9daff3896b01ae4b62d00096c7e989f1596f2af10b927532f39",

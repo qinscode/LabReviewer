@@ -1,0 +1,8 @@
+/yarn.lock
+/.yarnrc.yml
+/yarn.lock
+/dist/
+/.yarn/
+/node_modules/
+/.idea/
+/build/icon.iconset/
