@@ -1,47 +1,23 @@
 {
-  "name": "comment-generator-app",
-  "version": "1.2.0",
-  "description": "Comment Generator Tool for Lab Setup Reviews",
-  "main": "dist/main.js",
-  "type": "commonjs",
+  "name": "LR2",
+  "version": "1.0.0",
+  "description": "Comment Generator Tool for Lab Report",
+  "main": "dist/index.js",
   "scripts": {
-    "start": "tsc && electron .",
-    "build": "tsc && electron-builder --mac",
-    "watch": "tsc -w"
+    "build": "tsc && cp index.html app.js dist/",
+    "dev": "serve . -p 3000",
+    "dev:watch": "tsc --watch",
+    "tauri": "tauri",
+    "tauri:dev": "tauri dev",
+    "tauri:build": "tauri build"
   },
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@types/electron": "^1.6.10",
-    "@types/node": "^20.11.19",
-    "electron": "^33.0.1",
-    "electron-builder": "^25.1.8",
-    "typescript": "^5.3.3"
-  },
-  "build": {
-    "appId": "com.example.comment-generator",
-    "productName": "Comment Generator",
-    "files": [
-      "dist/**/*",
-      "index.html",
-      "package.json"
-    ],
-    "mac": {
-      "category": "public.app-category.utilities",
-      "target": [
-        {
-          "target": "zip",
-          "arch": [
-            "arm64"
-          ]
-        }
-      ],
-      "icon": "build/icon.icns",
-      "mergeASARs": false
-    }
-  },
-  "packageManager": "yarn@4.5.0+sha512.837566d24eec14ec0f5f1411adb544e892b3454255e61fdef8fd05f3429480102806bac7446bc9daff3896b01ae4b62d00096c7e989f1596f2af10b927532f39",
   "dependencies": {
-    "@types/ajv": "^1.0.0"
-  }
+    "@tauri-apps/api": "^2.0.0"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.0.0",
+    "serve": "^14.2.1",
+    "typescript": "^5.5.3"
+  },
+  "private": true
 }
