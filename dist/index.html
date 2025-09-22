@@ -197,6 +197,59 @@
             text-align: center;
         }
 
+        .lab-selector {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .lab-selector label {
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .lab-selector select {
+            padding: 10px 14px;
+            border: 1px solid #ced4da;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background-color: #fff;
+        }
+
+        .lab-selector select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.25);
+        }
+
+        .lab-details {
+            background-color: #eef4ff;
+            border-left: 4px solid var(--primary-color);
+            padding: 12px 16px;
+            border-radius: var(--border-radius);
+            margin-bottom: 25px;
+        }
+
+        #labTitle {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        #labOverview {
+            margin: 8px 0 0 0;
+        }
+
+        #labNote {
+            margin: 8px 0 0 0;
+            font-size: 14px;
+            color: #2c3e50;
+            font-style: italic;
+        }
+
         @keyframes starJump {
             0% {
                 transform: translateY(0) scale(0);
@@ -229,45 +282,16 @@
 <body>
 <div class="container">
     <h1 class="title">Comment Generator Tool for Lab Report</h1>
-    <div class="options" id="options">
-        <label class="option">
-            <input type="checkbox" value="The description is sufficient" id="sufficientDescription">
-            The description is sufficient
-        </label>
-        <label class="option">
-            <input type="checkbox" value="No screenshot/description of installing fabric">
-            No screenshot/description of installing fabric
-        </label>
-        <label class="option">
-            <input type="checkbox" value="No explanation of the config file">
-            No explanation of the config file
-        </label>
-        <label class="option">
-            <input type="checkbox" value="No explanation of the fabric code that connects with the instance">
-            No explanation of the fabric code that connects with the instance
-        </label>
-        <label class="option">
-            <input type="checkbox"
-                   value="In fabric for automation, no description of code in installing/setting/activating the Python 3 virtual environment">
-            In fabric for automation, no description of code in installing/setting/activating the Python 3 virtual
-            environment
-        </label>
-        <label class="option">
-            <input type="checkbox"
-                   value="In fabric for automation, no description of code in installing/configuring/restarting nginx">
-            In fabric for automation, no description of code in installing/configuring/restarting nginx
-        </label>
-        <label class="option">
-            <input type="checkbox"
-                   value="In fabric for automation, no description of code in creating and setting up django inside the created EC2 instance">
-            In fabric for automation, no description of code in creating and setting up django inside the created EC2
-            instance
-        </label>
-        <label class="option">
-            <input type="checkbox" value="No description/screenshot of the url access in the end">
-            No description/screenshot of the url access in the end
-        </label>
+    <div class="lab-selector">
+        <label for="labSelector">Select a lab</label>
+        <select id="labSelector"></select>
     </div>
+    <div class="lab-details">
+        <h2 id="labTitle"></h2>
+        <p id="labOverview"></p>
+        <p id="labNote"></p>
+    </div>
+    <div class="options" id="options"></div>
     <div id="suggestionStepMark"></div>
     <textarea id="output" readonly placeholder="Generated comments will appear here..."></textarea>
     <div class="buttons">
@@ -280,77 +304,252 @@
 </div>
 
 <script type="module">
+    import { LAB_RUBRICS, DEFAULT_MARKS } from './rubrics.js';
+
     const output = document.getElementById('output');
-    const options = document.getElementById('options');
-    const sufficientDescription = document.getElementById('sufficientDescription');
-    const otherOptions = options.querySelectorAll('input:not(#sufficientDescription)');
+    const optionsContainer = document.getElementById('options');
+    const suggestionStepMark = document.getElementById('suggestionStepMark');
     const clearBtn = document.getElementById('clearBtn');
     const copyBtn = document.getElementById('copyBtn');
     const generateBtn = document.getElementById('generateBtn');
-    const suggestionStepMark = document.getElementById('suggestionStepMark');
+    const labSelector = document.getElementById('labSelector');
+    const labTitle = document.getElementById('labTitle');
+    const labOverview = document.getElementById('labOverview');
+    const labNote = document.getElementById('labNote');
 
-    options.addEventListener('change', handleOptionChange);
-    clearBtn.addEventListener('click', clearComments);
-    copyBtn.addEventListener('click', copyToClipboard);
-    generateBtn.addEventListener('click', generateComments);
+    let currentLab = LAB_RUBRICS[0];
+    let sufficientInput = null;
+    const issueInputs = new Map();
+
+    populateSelector();
+    bindEvents();
+    loadLab(currentLab.id);
+
+    function populateSelector() {
+        LAB_RUBRICS.forEach((lab, index) => {
+            const option = document.createElement('option');
+            option.value = lab.id;
+            option.textContent = lab.label;
+            if (index === 0) {
+                option.selected = true;
+            }
+            labSelector.appendChild(option);
+        });
+    }
+
+    function bindEvents() {
+        labSelector.addEventListener('change', event => {
+            loadLab(event.target.value);
+        });
+
+        optionsContainer.addEventListener('change', handleOptionChange);
+        clearBtn.addEventListener('click', () => {
+            clearComments();
+        });
+        copyBtn.addEventListener('click', copyToClipboard);
+        generateBtn.addEventListener('click', () => {
+            generateComments();
+            updateSuggestionStepMark();
+        });
+    }
+
+    function loadLab(labId) {
+        const selectedLab = LAB_RUBRICS.find(lab => lab.id === labId);
+        if (!selectedLab) {
+            return;
+        }
+        currentLab = selectedLab;
+        renderLabDetails();
+        buildOptions();
+        clearComments();
+    }
+
+    function renderLabDetails() {
+        labTitle.textContent = currentLab.label;
+        labOverview.textContent = currentLab.overview || '';
+        if (currentLab.ratingNote) {
+            labNote.textContent = currentLab.ratingNote;
+            labNote.style.display = 'block';
+        } else {
+            labNote.textContent = '';
+            labNote.style.display = 'none';
+        }
+    }
+
+    function buildOptions() {
+        optionsContainer.innerHTML = '';
+        issueInputs.clear();
+
+        const sufficientOption = createOption(`${currentLab.sufficientLabel}`, `${currentLab.id}-sufficient`);
+        sufficientInput = sufficientOption.querySelector('input');
+        sufficientInput.checked = true;
+        sufficientInput.dataset.role = 'sufficient';
+        optionsContainer.appendChild(sufficientOption);
+
+        currentLab.issues.forEach(issue => {
+            const option = createOption(issue.text, issue.id);
+            const input = option.querySelector('input');
+            input.dataset.feedback = issue.text;
+            issueInputs.set(issue.id, input);
+            optionsContainer.appendChild(option);
+        });
+    }
+
+    function createOption(labelText, id) {
+        const label = document.createElement('label');
+        label.className = 'option';
+        const input = document.createElement('input');
+        input.type = 'checkbox';
+        input.id = id;
+        input.value = labelText;
+        label.appendChild(input);
+        const span = document.createElement('span');
+        span.textContent = labelText;
+        label.appendChild(span);
+        return label;
+    }
 
     function handleOptionChange(event) {
-        if (event.target === sufficientDescription) {
-            otherOptions.forEach(option => {
-                option.checked = false;
-            });
-        } else {
-            const anyOtherChecked = Array.from(otherOptions).some(option => option.checked);
-            sufficientDescription.checked = !anyOtherChecked;
+        const target = event.target;
+        if (!target || target.tagName !== 'INPUT') {
+            return;
         }
+
+        if (target === sufficientInput) {
+            issueInputs.forEach(input => {
+                input.checked = false;
+            });
+        } else if (issueInputs.has(target.id)) {
+            sufficientInput.checked = false;
+        }
+
+        if (target.type === 'checkbox') {
+            const parentLabel = target.closest('.option');
+            if (parentLabel) {
+                parentLabel.classList.add('bounce');
+                setTimeout(() => parentLabel.classList.remove('bounce'), 500);
+            }
+        }
+
         generateComments();
         updateSuggestionStepMark();
+    }
 
-        if (event.target.type === 'checkbox') {
-            const parentLabel = event.target.closest('.option');
-            parentLabel.classList.add('bounce');
-            setTimeout(() => {
-                parentLabel.classList.remove('bounce');
-            }, 500);
+    function getCheckedIssues() {
+        return Array.from(issueInputs.values()).filter(input => input.checked);
+    }
+
+    function getLabShortName() {
+        if (!currentLab || !currentLab.label) {
+            return 'Lab';
         }
+        const separatorIndex = currentLab.label.indexOf('–');
+        if (separatorIndex === -1) {
+            return currentLab.label.trim();
+        }
+        return currentLab.label.slice(0, separatorIndex).trim();
+    }
+
+    function getRating(issueCount) {
+        const thresholds = currentLab.thresholds || {};
+        const goodLimit = typeof thresholds.goodMaxIssues === 'number' ? thresholds.goodMaxIssues : 0;
+        const mediumLimit = typeof thresholds.mediumMaxIssues === 'number'
+            ? thresholds.mediumMaxIssues
+            : (typeof thresholds.averageMaxIssues === 'number' ? thresholds.averageMaxIssues : goodLimit);
+        const badLimit = typeof thresholds.badMaxIssues === 'number' ? thresholds.badMaxIssues : Number.POSITIVE_INFINITY;
+
+        if (issueCount === 0 && sufficientInput && sufficientInput.checked) {
+            return 'excellent';
+        }
+
+        if (issueCount > 0 && issueCount <= goodLimit) {
+            return 'good';
+        }
+
+        if (issueCount > goodLimit && issueCount <= mediumLimit) {
+            return 'medium';
+        }
+
+        if (issueCount > mediumLimit && issueCount <= badLimit) {
+            return 'bad';
+        }
+
+        return issueCount === 0 ? 'excellent' : 'bad';
+    }
+
+    function getMarkForRating(rating) {
+        const marks = currentLab.marks || DEFAULT_MARKS;
+        switch (rating) {
+            case 'excellent':
+                return marks.excellent;
+            case 'good':
+                return marks.good;
+            case 'medium':
+                return marks.medium;
+            case 'bad':
+                return marks.bad;
+            default:
+                return marks.none || marks.bad || marks.medium;
+        }
+    }
+
+    function formatDetails(details) {
+        if (!details.length) {
+            return '';
+        }
+        return details.join(' ');
+    }
+
+    function capitalize(text) {
+        return text.charAt(0).toUpperCase() + text.slice(1);
     }
 
     function generateComments() {
-        const selectedOptions = Array.from(options.querySelectorAll('input:checked')).map(input => input.value + '.');
-        let comment = '';
-        if (selectedOptions.length > 0) {
-            if (!sufficientDescription.checked) {
-                comment = "In lab 7, the description is insufficient, as ";
-            } else {
-                comment = "In lab 7, ";
-            }
-            comment += selectedOptions.join(' ');
+        if (!sufficientInput) {
+            return '';
         }
+
+        const selectedIssues = getCheckedIssues();
+        const issueCount = selectedIssues.length;
+        const rating = getRating(issueCount);
+        const labName = getLabShortName();
+        let comment = '';
+
+        if (rating === 'excellent') {
+            comment = `${labName} descriptions are excellent: it is sufficient, and the steps are clear and well-detailed.`;
+        } else {
+            const details = selectedIssues.map(input => input.dataset.feedback || input.value);
+            const detailText = formatDetails(details);
+            const ratingText = rating === 'good' ? `${labName} descriptions are good overall, but consider: ${detailText}`
+                : rating === 'medium' ? `${labName} descriptions are medium because: ${detailText}`
+                : `${labName} descriptions are bad because: ${detailText}`;
+            comment = detailText ? ratingText : `${labName} descriptions are ${rating}.`;
+        }
+
         output.value = comment;
         output.classList.add('pulse');
         setTimeout(() => output.classList.remove('pulse'), 700);
+        return comment;
+    }
+
+    function computeMark(issueCount) {
+        const rating = getRating(issueCount);
+        return getMarkForRating(rating);
     }
 
     function updateSuggestionStepMark() {
-        const deductionPoints = Array.from(otherOptions).filter(option => option.checked).length;
-        let mark;
-        if (deductionPoints < 2) {
-            mark = "85%";
-        } else if (deductionPoints < 4) {
-            mark = "65%";
-        } else if (deductionPoints < 5) {
-            mark = "45%";
-        } else if (deductionPoints < 6) {
-            mark = "25%";
-        } else {
-            mark = "0%";
+        if (!suggestionStepMark) {
+            return;
         }
-        suggestionStepMark.textContent = `Suggestion Step Mark: ${mark}`;
 
-        // 添加星星动画
+        const issueCount = getCheckedIssues().length;
+        const rating = getRating(issueCount);
+        const mark = getMarkForRating(rating);
+        suggestionStepMark.textContent = `Step Mark Suggestion: ${mark} (${capitalize(rating)})`;
+
         for (let i = 0; i < 5; i++) {
             const star = document.createElement('span');
-            star.textContent = '🌟'; // 使用 emoji 星星
+            star.textContent = '🌟';
             star.className = 'star';
             star.style.left = `${Math.random() * 100}%`;
             star.style.animationDelay = `${Math.random() * 0.5}s`;
@@ -364,22 +563,31 @@
     }
 
     function clearComments() {
-        output.value = '';
-        options.querySelectorAll('input').forEach(input => {
+        if (sufficientInput) {
+            sufficientInput.checked = true;
+        }
+        issueInputs.forEach(input => {
             input.checked = false;
         });
-        suggestionStepMark.textContent = '';
+        output.value = '';
+        if (suggestionStepMark) {
+            suggestionStepMark.textContent = '';
+        }
     }
 
     async function copyToClipboard() {
         try {
-            if (window.copyToClipboard) {
-                await window.copyToClipboard(output.value);
-            } else {
-                // Fallback for non-Tauri environments
-                await navigator.clipboard.writeText(output.value);
+            const text = output.value;
+            if (!text) {
+                return;
             }
-            
+
+            if (window.copyToClipboard) {
+                await window.copyToClipboard(text);
+            } else {
+                await navigator.clipboard.writeText(text);
+            }
+
             copyBtn.textContent = 'Copied!';
             copyBtn.style.backgroundColor = '#27ae60';
             setTimeout(() => {
@@ -387,10 +595,8 @@
                 copyBtn.style.backgroundColor = '';
             }, 2000);
 
-            // 添加以下代码来清空所有选项
             setTimeout(() => {
                 clearComments();
-                updateSuggestionStepMark();
             }, 15000);
         } catch (err) {
             console.error('Failed to copy: ', err);

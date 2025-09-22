@@ -4,7 +4,7 @@
   "description": "Comment Generator Tool for Lab Report",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc && cp index.html app.js dist/",
+    "build": "tsc && cp index.html app.js rubrics.js dist/",
     "dev": "serve . -p 3000",
     "dev:watch": "tsc --watch",
     "tauri": "tauri",
