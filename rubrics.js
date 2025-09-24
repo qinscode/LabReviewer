@@ -14,10 +14,10 @@ export const LAB_RUBRICS = [
     sufficientLabel: 'Descriptions are sufficient',
     sufficientComment: 'Lab 1 descriptions are excellent with clear evidence of the working environment.',
     insufficientIntro: 'Lab 1 descriptions are insufficient because:',
-    ratingNote: 'Good if only one or two items are missing; otherwise medium.',
+    ratingNote: 'Good if only one or two items are missing; three items is medium, four or more items are bad.',
     thresholds: {
       goodMaxIssues: 2,
-      mediumMaxIssues: 5
+      mediumMaxIssues: 3
     },
     issues: [
       {
@@ -49,10 +49,10 @@ export const LAB_RUBRICS = [
     sufficientLabel: 'Descriptions are sufficient',
     sufficientComment: 'Lab 2 descriptions are excellent and cover the full EC2 deployment journey.',
     insufficientIntro: 'Lab 2 descriptions are insufficient because:',
-    ratingNote: 'Good if no more than four items are missing; otherwise medium.',
+    ratingNote: 'Good if no more than four items are missing; five to seven items are medium; eight or more items are bad.',
     thresholds: {
       goodMaxIssues: 4,
-      mediumMaxIssues: 10
+      mediumMaxIssues: 7
     },
     issues: [
       {
@@ -104,10 +104,10 @@ export const LAB_RUBRICS = [
     sufficientLabel: 'Descriptions are sufficient',
     sufficientComment: 'Lab 3 descriptions are excellent with clear S3 and DynamoDB evidence.',
     insufficientIntro: 'Lab 3 descriptions are insufficient because:',
-    ratingNote: 'Good if no more than four items are missing; otherwise medium.',
+    ratingNote: 'Good if no more than four items are missing; five to eight items are medium; nine or more items are bad.',
     thresholds: {
       goodMaxIssues: 4,
-      mediumMaxIssues: 11
+      mediumMaxIssues: 8
     },
     issues: [
       {
@@ -163,10 +163,10 @@ export const LAB_RUBRICS = [
     sufficientLabel: 'Descriptions are sufficient',
     sufficientComment: 'Lab 4 descriptions are excellent and trace the security controls end to end.',
     insufficientIntro: 'Lab 4 descriptions are insufficient because:',
-    ratingNote: 'Good if no more than four items are missing; otherwise medium.',
+    ratingNote: 'Good if no more than four items are missing; five to eleven items are medium; twelve or more items are bad.',
     thresholds: {
       goodMaxIssues: 4,
-      mediumMaxIssues: 14
+      mediumMaxIssues: 11
     },
     issues: [
       {
@@ -234,10 +234,10 @@ export const LAB_RUBRICS = [
     sufficientLabel: 'Descriptions are sufficient',
     sufficientComment: 'Lab 5 descriptions are excellent and confirm the full load balancing workflow.',
     insufficientIntro: 'Lab 5 descriptions are insufficient because:',
-    ratingNote: 'Good if no more than four items are missing; otherwise medium.',
+    ratingNote: 'Good if no more than four items are missing; five to six items are medium; seven or more items are bad.',
     thresholds: {
       goodMaxIssues: 4,
-      mediumMaxIssues: 9
+      mediumMaxIssues: 6
     },
     issues: [
       {
